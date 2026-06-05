@@ -291,12 +291,19 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 // ================================================
 // LIONS AGENT — TOGGLE
 // ================================================
+let firstOpen = true;
+
 function toggleAgent() {
   agentOpen = !agentOpen;
   const panel = document.getElementById('agent-panel');
   panel.classList.toggle('open', agentOpen);
 
   if (agentOpen) {
+    if (firstOpen) {
+      firstOpen = false;
+      addBotMessage('Olá! Sou o <strong>Lions Agent</strong>, a IA do portfólio do Leonardo G. Mendoza. Posso te contar sobre seus projetos, habilidades e trajetória. O que você gostaria de saber? 😊');
+    }
+
     // Check if API key is saved
     if (geminiApiKey) {
       const keyBar = document.getElementById('agent-key-bar');
@@ -348,12 +355,67 @@ function addBotMessage(text) {
   if (!messages) return;
   const div = document.createElement('div');
   div.className = 'agent-msg bot-msg';
-  div.innerHTML = `
-    <span class="msg-avatar">🦁</span>
-    <div class="msg-bubble">${text}</div>
-  `;
+  
+  const avatar = document.createElement('span');
+  avatar.className = 'msg-avatar';
+  avatar.textContent = '🦁';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  
+  div.appendChild(avatar);
+  div.appendChild(bubble);
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
+
+  // Typewriter effect
+  let i = 0;
+  function typeWriter() {
+    if (i < text.length) {
+      let char = text.charAt(i);
+      
+      if (char === '<') {
+        let tagEnd = text.indexOf('>', i);
+        if (tagEnd !== -1) {
+          bubble.innerHTML += text.substring(i, tagEnd + 1);
+          i = tagEnd + 1;
+          setTimeout(typeWriter, 15);
+          messages.scrollTop = messages.scrollHeight;
+          return;
+        }
+      }
+      
+      bubble.innerHTML += char;
+      i++;
+      messages.scrollTop = messages.scrollHeight;
+      setTimeout(typeWriter, 15);
+    }
+  }
+  typeWriter();
+
+  // Voice Synthesis (TTS)
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel(); // Parar voz anterior
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = text;
+    let plainText = tempDiv.textContent || tempDiv.innerText || "";
+    
+    // Clean emojis for speech
+    plainText = plainText.replace(/[🦁😊]/g, '');
+
+    const utterance = new SpeechSynthesisUtterance(plainText);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 1.1;
+
+    // Tentar achar voz em Português melhor (ex: Google)
+    const voices = window.speechSynthesis.getVoices();
+    const ptVoice = voices.find(v => v.lang === 'pt-BR' && v.name.includes('Google')) 
+                 || voices.find(v => v.lang === 'pt-BR');
+    if (ptVoice) utterance.voice = ptVoice;
+
+    window.speechSynthesis.speak(utterance);
+  }
 }
 
 function addUserMessage(text) {
