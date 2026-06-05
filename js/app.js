@@ -617,67 +617,114 @@ function formatMarkdown(text) {
 })();
 
 // ================================================
-// IRON MAN HUD MODAL LOGIC
+// IRON MAN HUD DYNAMIC MODALS LOGIC
 // ================================================
-let hudTypeTimeout;
+
+// Manage active modals
+const activeModals = [];
+const availableCorners = ['pos-top-left', 'pos-top-right', 'pos-bottom-left', 'pos-bottom-right'];
+let modalCounter = 0;
 
 window.openHUDModal = function(title, content) {
-  const modal = document.getElementById('hud-modal');
-  const modalTitle = document.getElementById('hud-modal-title');
-  const modalBody = document.getElementById('hud-modal-body');
-  
-  if (modal && modalTitle && modalBody) {
-    modalTitle.innerHTML = title;
-    // adding glitch attribute
-    modalTitle.setAttribute('data-text', title);
-    
-    modalBody.innerHTML = '';
-    modal.classList.add('active');
-    
-    clearTimeout(hudTypeTimeout);
-    
-    let i = 0;
-    function typeWriter() {
-      if (i < content.length) {
-        let char = content.charAt(i);
-        
-        // Fast-forward HTML tags to avoid breaking markup
-        if (char === '<') {
-          let tagEnd = content.indexOf('>', i);
-          if (tagEnd !== -1) {
-            modalBody.innerHTML += content.substring(i, tagEnd + 1);
-            i = tagEnd + 1;
-            hudTypeTimeout = setTimeout(typeWriter, 15);
-            return;
-          }
-        }
-        
-        modalBody.innerHTML += char;
-        i++;
-        hudTypeTimeout = setTimeout(typeWriter, 15);
-      }
-    }
-    typeWriter();
+  // If we have 4 modals, remove the oldest one
+  if (activeModals.length >= 4) {
+    const oldestModal = activeModals.shift();
+    removeModal(oldestModal.id);
   }
+
+  // Find an available corner
+  const usedCorners = activeModals.map(m => m.corner);
+  const corner = availableCorners.find(c => !usedCorners.includes(c)) || availableCorners[0];
+
+  const modalId = 'modal-' + (++modalCounter);
+  
+  // Create Modal Element
+  const modalDiv = document.createElement('div');
+  modalDiv.className = `dynamic-modal ${corner}`;
+  modalDiv.id = modalId;
+  
+  modalDiv.innerHTML = `
+    <button class="hud-modal-close" onclick="closeHUDModal('${modalId}')">✕</button>
+    <div class="hud-modal-title glitch-text" data-text="${title}">${title}</div>
+    <div class="hud-modal-body"></div>
+  `;
+  
+  document.body.appendChild(modalDiv);
+  
+  // Trigger animation
+  setTimeout(() => {
+    modalDiv.classList.add('active');
+  }, 10);
+
+  // Store modal state
+  const modalState = {
+    id: modalId,
+    corner: corner,
+    timeoutId: setTimeout(() => {
+      closeHUDModal(modalId);
+    }, 180000) // 3 minutes timeout
+  };
+  
+  activeModals.push(modalState);
+  
+  // Typewriter effect for this specific modal
+  const modalBody = modalDiv.querySelector('.hud-modal-body');
+  let i = 0;
+  
+  function typeWriter() {
+    // If modal was closed before typing finished, stop typing
+    if (!document.getElementById(modalId)) return;
+    
+    if (i < content.length) {
+      let char = content.charAt(i);
+      
+      // Fast-forward HTML tags
+      if (char === '<') {
+        let tagEnd = content.indexOf('>', i);
+        if (tagEnd !== -1) {
+          modalBody.innerHTML += content.substring(i, tagEnd + 1);
+          i = tagEnd + 1;
+          setTimeout(typeWriter, 15);
+          return;
+        }
+      }
+      
+      modalBody.innerHTML += char;
+      i++;
+      setTimeout(typeWriter, 15);
+    }
+  }
+  
+  typeWriter();
 };
 
-window.closeHUDModal = function() {
-  const modal = document.getElementById('hud-modal');
+window.closeHUDModal = function(modalId) {
+  const index = activeModals.findIndex(m => m.id === modalId);
+  if (index !== -1) {
+    clearTimeout(activeModals[index].timeoutId);
+    activeModals.splice(index, 1);
+  }
+  removeModal(modalId);
+};
+
+function removeModal(modalId) {
+  const modal = document.getElementById(modalId);
   if (modal) {
     modal.classList.remove('active');
-    clearTimeout(hudTypeTimeout);
-  }
-};
-
-// Fechar modal ao clicar fora
-document.addEventListener('DOMContentLoaded', () => {
-  const modal = document.getElementById('hud-modal');
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeHUDModal();
+    setTimeout(() => {
+      if (modal.parentNode) {
+        modal.parentNode.removeChild(modal);
       }
-    });
+    }, 400); // Wait for transition
+  }
+}
+
+// Fechar todos os modais ao apertar ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    while(activeModals.length > 0) {
+      closeHUDModal(activeModals[0].id);
+    }
   }
 });
 

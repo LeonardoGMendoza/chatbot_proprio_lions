@@ -1426,49 +1426,50 @@ ul { list-style: none; }
   filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.8));
 }
 
-/* HUD Overlay Modal */
-.hud-modal-overlay {
+/* HUD Dynamic Modals */
+.dynamic-modal {
   position: fixed;
-  bottom: 30px; 
-  right: 30px; 
-  width: auto; 
-  height: auto;
-  z-index: 9999;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-
-.hud-modal-overlay.active {
-  opacity: 1;
-  pointer-events: none; /* Let clicks pass through the overlay container */
-}
-
-.hud-modal-content {
   background: rgba(0, 20, 40, 0.85);
   border: 2px solid rgba(0, 240, 255, 0.6);
   box-shadow: 0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1);
   border-radius: 12px;
-  width: 400px; /* Much smaller */
+  width: 380px;
   max-width: 90vw;
-  max-height: 60vh;
+  max-height: 40vh;
   padding: 20px;
-  position: relative;
-  transform: scale(0.9) translateY(20px);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   color: #e0ffff;
   font-family: var(--font-mono);
   overflow-y: auto;
-  pointer-events: auto; /* Catch clicks on the modal itself */
+  pointer-events: auto;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
+  z-index: 9999;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.hud-modal-overlay.active .hud-modal-content {
-  transform: scale(1) translateY(0);
+.dynamic-modal.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Corner Positions */
+.pos-top-left { top: 30px; left: 30px; transform-origin: top left; }
+.pos-top-right { top: 30px; right: 30px; transform-origin: top right; }
+.pos-bottom-left { bottom: 30px; left: 30px; transform-origin: bottom left; }
+.pos-bottom-right { bottom: 30px; right: 30px; transform-origin: bottom right; }
+
+.dynamic-modal.pos-top-left { transform: scale(0.9) translate(-20px, -20px); }
+.dynamic-modal.pos-top-right { transform: scale(0.9) translate(20px, -20px); }
+.dynamic-modal.pos-bottom-left { transform: scale(0.9) translate(-20px, 20px); }
+.dynamic-modal.pos-bottom-right { transform: scale(0.9) translate(20px, 20px); }
+
+.dynamic-modal.active.pos-top-left,
+.dynamic-modal.active.pos-top-right,
+.dynamic-modal.active.pos-bottom-left,
+.dynamic-modal.active.pos-bottom-right {
+  transform: scale(1) translate(0, 0);
 }
 
 .hud-modal-close {
