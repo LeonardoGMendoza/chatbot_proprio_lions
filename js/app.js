@@ -67,24 +67,16 @@ let conversationHistory = [];
 let agentOpen = false;
 
 // ================================================
-// PARTICLES BACKGROUND
+// STAR WARS BACKGROUND (3D STARFIELD)
 // ================================================
 (function initParticles() {
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let particles = [];
   let W, H;
-  let mouse = { x: null, y: null, radius: 150 };
-
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.x;
-    mouse.y = e.y;
-  });
-  window.addEventListener('mouseout', () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
+  let stars = [];
+  const numStars = 600;
+  let speed = 1.5;
 
   function resize() {
     W = canvas.width = window.innerWidth;
@@ -93,67 +85,55 @@ let agentOpen = false;
   window.addEventListener('resize', resize);
   resize();
 
-  class Particle {
-    constructor() { this.reset(); }
+  class Star {
+    constructor() {
+      this.x = (Math.random() - 0.5) * W * 2;
+      this.y = (Math.random() - 0.5) * H * 2;
+      this.z = Math.random() * W;
+      this.pz = this.z;
+    }
     reset() {
-      this.x = Math.random() * W;
-      this.y = Math.random() * H;
-      this.r = Math.random() * 1.5 + 0.5;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.alpha = Math.random() * 0.5 + 0.1;
+      this.x = (Math.random() - 0.5) * W * 2;
+      this.y = (Math.random() - 0.5) * H * 2;
+      this.z = W;
+      this.pz = this.z;
     }
     update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-
-      // Mouse repulsion
-      if (mouse.x != null) {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < mouse.radius) {
-          const force = (mouse.radius - distance) / mouse.radius;
-          this.x -= (dx / distance) * force * 2;
-          this.y -= (dy / distance) * force * 2;
-        }
+      this.z -= speed;
+      if (this.z < 1) {
+        this.reset();
       }
     }
     draw() {
+      let sx = (this.x / this.z) * (W / 2) + W / 2;
+      let sy = (this.y / this.z) * (H / 2) + H / 2;
+      
+      let px = (this.x / this.pz) * (W / 2) + W / 2;
+      let py = (this.y / this.pz) * (H / 2) + H / 2;
+      this.pz = this.z;
+      
+      let opacity = 1 - (this.z / W);
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(212,160,23,${this.alpha})`;
-      ctx.fill();
+      ctx.strokeStyle = `rgba(0, 240, 255, ${opacity})`;
+      ctx.lineWidth = Math.max(0.5, opacity * 2);
+      ctx.moveTo(px, py);
+      ctx.lineTo(sx, sy);
+      ctx.stroke();
     }
   }
 
-  for (let i = 0; i < 90; i++) particles.push(new Particle());
+  for (let i = 0; i < numStars; i++) stars.push(new Star());
+
+  // Mouse interaction for speed
+  window.addEventListener('mousemove', (e) => {
+    let mouseX = e.clientX / W;
+    speed = 1.5 + (mouseX * 4); // Speed increases as mouse moves right
+  });
 
   function animate() {
-    ctx.clearRect(0, 0, W, H);
-    
-    // Update and draw particles
-    particles.forEach(p => { p.update(); p.draw(); });
-
-    // Draw connecting lines
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x;
-        let dy = particles[i].y - particles[j].y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 110) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(212,160,23,${0.15 * (1 - distance/110)})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-
+    ctx.fillStyle = 'rgba(0, 10, 20, 0.4)'; // Cyberpunk dark blue trail
+    ctx.fillRect(0, 0, W, H);
+    stars.forEach(s => { s.update(); s.draw(); });
     requestAnimationFrame(animate);
   }
   animate();
@@ -289,9 +269,30 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 });
 
 // ================================================
-// LIONS AGENT — TOGGLE
+// LIONS AGENT — TOGGLE & SOUND
 // ================================================
 let firstOpen = true;
+let agentSoundEnabled = false;
+
+window.toggleAgentSound = function() {
+  agentSoundEnabled = !agentSoundEnabled;
+  const btn = document.getElementById('agent-sound-btn');
+  if (btn) {
+    if (agentSoundEnabled) {
+      btn.textContent = '🔊';
+      if ('speechSynthesis' in window) {
+        // Unlock speech synthesis with a user gesture
+        window.speechSynthesis.cancel();
+        const welcome = new SpeechSynthesisUtterance('Áudio ativado.');
+        welcome.lang = 'pt-BR';
+        window.speechSynthesis.speak(welcome);
+      }
+    } else {
+      btn.textContent = '🔇';
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+  }
+}
 
 function toggleAgent() {
   agentOpen = !agentOpen;
@@ -394,7 +395,7 @@ function addBotMessage(text) {
   typeWriter();
 
   // Voice Synthesis (TTS)
-  if ('speechSynthesis' in window) {
+  if (agentSoundEnabled && 'speechSynthesis' in window) {
     window.speechSynthesis.cancel(); // Parar voz anterior
 
     const tempDiv = document.createElement('div');

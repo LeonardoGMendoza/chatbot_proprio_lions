@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=11" />
+  <link rel="stylesheet" href="css/style.css?v=13" />
 </head>
 <body>
 
@@ -642,9 +642,12 @@
             <span class="status-dot"></span> Conectando...
           </div>
         </div>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button id="agent-sound-btn" class="agent-sound-btn" onclick="toggleAgentSound()" title="Ativar Voz">🔇</button>
+          <button class="agent-close" onclick="toggleAgent()">✕</button>
+        </div>
       </div>
-      <button class="agent-close" onclick="toggleAgent()">✕</button>
-    </div>
 
     <div class="agent-key-bar" id="agent-key-bar">
       <input
@@ -680,6 +683,6 @@
   <!-- Modal System agora é gerado via Javascript no app.js -->
 
   <script src="config.js"></script>
-  <script src="js/app.js?v=11"></script>
+  <script src="js/app.js?v=13"></script>
 </body>
 </html>
