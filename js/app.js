@@ -616,3 +616,41 @@ function formatMarkdown(text) {
   });
 })();
 
+// ================================================
+// IRON MAN HUD MODAL LOGIC
+// ================================================
+window.openHUDModal = function(title, content) {
+  const modal = document.getElementById('hud-modal');
+  const modalTitle = document.getElementById('hud-modal-title');
+  const modalBody = document.getElementById('hud-modal-body');
+  
+  if (modal && modalTitle && modalBody) {
+    modalTitle.innerHTML = title;
+    // adding glitch attribute
+    modalTitle.setAttribute('data-text', title);
+    modalBody.innerHTML = content;
+    modal.classList.add('active');
+    
+    // Play a sci-fi sound effect if we had one, but visual is enough
+  }
+};
+
+window.closeHUDModal = function() {
+  const modal = document.getElementById('hud-modal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+};
+
+// Fechar modal ao clicar fora
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('hud-modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeHUDModal();
+      }
+    });
+  }
+});
+

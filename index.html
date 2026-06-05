@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=3" />
+  <link rel="stylesheet" href="css/style.css?v=5" />
 </head>
 <body>
 
@@ -41,9 +41,9 @@
   <div class="layout-wrapper" id="main-layout">
 
     <!-- ============ LEFT PANEL ============ -->
-    <aside class="panel panel-left" id="panel-left">
+    <aside class="panel panel-left hud-panel" id="panel-left">
 
-      <div class="panel-card card-glow" id="card-formation">
+      <div class="panel-card hud-program" id="card-formation" onclick="openHUDModal('Formação Acadêmica', '<p>AI Scientist na FIAP.<br/>Especialização em Machine Learning, Deep Learning e Engenharia de Dados.</p>')">
         <div class="card-icon">🎓</div>
         <div class="card-label">Formação Atual</div>
         <div class="card-title">AI Scientist</div>
@@ -51,7 +51,7 @@
         <div class="card-badge badge-gold">Em andamento</div>
       </div>
 
-      <div class="panel-card card-glow" id="card-challenge">
+      <div class="panel-card hud-program" id="card-challenge" onclick="openHUDModal('Tech Challenge FIAP', '<p>Projeto avaliado com nota 90/100.<br/>Desenvolvimento de um modelo preditivo de Random Forest com balanceamento SMOTE baseado na metodologia CRISP-DM.</p>')">
         <div class="card-icon">🏆</div>
         <div class="card-label">Tech Challenge FIAP</div>
         <div class="card-score">
@@ -62,7 +62,7 @@
         <div class="card-badge badge-success">Aprovado ✓</div>
       </div>
 
-      <div class="panel-card card-glow" id="card-infra">
+      <div class="panel-card hud-program" id="card-infra" onclick="openHUDModal('Infraestrutura Cloud', '<p>Servidor VPS rodando Ubuntu 24.04 na Hostinger.<br/>Gerenciamento de DNS no Cloudflare, proxy reverso via Nginx e SSL automático.</p>')">
         <div class="card-icon">🖥️</div>
         <div class="card-label">Infraestrutura</div>
         <div class="card-title">VPS Próprio</div>
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="panel-card card-glow" id="card-stats">
+      <div class="panel-card hud-program" id="card-stats" onclick="openHUDModal('Métricas GitHub', '<p>Mais de 10 repositórios ativos.<br/>4 aplicações atualmente hospedadas e rodando em produção (100% Uptime).</p>')">
         <div class="card-icon">📊</div>
         <div class="card-label">GitHub</div>
         <div class="card-stats-grid">
@@ -87,7 +87,7 @@
             <span class="stat-l">Apps no ar</span>
           </div>
         </div>
-        <a href="https://github.com/LeonardoGMendoza" target="_blank" class="card-link">Ver GitHub →</a>
+        <a href="https://github.com/LeonardoGMendoza" target="_blank" class="card-link" onclick="event.stopPropagation()">Ver GitHub →</a>
       </div>
 
     </aside>
@@ -503,15 +503,15 @@
     </main>
 
     <!-- ============ RIGHT PANEL ============ -->
-    <aside class="panel panel-right" id="panel-right">
+    <aside class="panel panel-right hud-panel" id="panel-right">
 
-      <div class="panel-card rotating-card">
+      <div class="panel-card hud-program rotating-card" onclick="openHUDModal('Mensagem do Sistema', '<p>Bem-vindo ao LIONS OS v2.0.<br/>Autenticação verificada. Nível de acesso: Administrador.</p>')">
         <div class="card-label">🦁 Lions Quote</div>
         <div class="rotating-phrase" id="rotating-phrase"></div>
       </div>
 
       <!-- HACKER TERMINAL -->
-      <div class="panel-card hacker-terminal" id="hacker-terminal">
+      <div class="panel-card hud-program hacker-terminal" id="hacker-terminal" onclick="openHUDModal('Terminal Avançado', '<p>Acesso root concedido. Último login: Hoje.</p><br/><code>root@lions-vps:~# tail -f /var/log/syslog<br/>Loading AI models... 100%<br/>System optimal.</code>')">
         <div class="terminal-header">
           <div class="term-dots"><span></span><span></span><span></span></div>
           <div class="term-title">root@lions-vps:~</div>
@@ -522,7 +522,7 @@
         </div>
       </div>
 
-      <div class="panel-card card-live">
+      <div class="panel-card hud-program card-live" onclick="openHUDModal('Monitoramento em Tempo Real', '<p>Verificando a integridade dos serviços hospedados no VPS Ubuntu.</p><ul><li>cursopythonia.sandlj.com.br: ONLINE (99.9% Uptime)</li><li>brinkamaisfestas.sandlj.com.br: ONLINE</li><li>lions.sandlj.com.br: ONLINE</li></ul>')">
         <div class="card-label">⚡ Status</div>
         <div class="live-items">
           <div class="live-item">
@@ -544,7 +544,7 @@
         </div>
       </div>
 
-      <div class="panel-card card-skill-meter">
+      <div class="panel-card hud-program card-skill-meter" onclick="openHUDModal('Métricas de Habilidades', '<p>Progresso contínuo de aprendizado com foco na arquitetura de IA.</p><br/><div style=\'color: var(--gold)\'>Análise preditiva: Ativa.</div>')">
         <div class="card-label">📈 Skill Progress</div>
         <div class="skill-bars">
           <div class="skill-item">
@@ -570,7 +570,7 @@
         </div>
       </div>
 
-      <div class="panel-card card-goal">
+      <div class="panel-card hud-program card-goal" onclick="openHUDModal('Missão 2026', '<p>Desenvolver e implementar uma solução completa de IA generativa para automação empresarial até o final do ano.</p>')">
         <div class="card-label">🎯 Objetivo 2026</div>
         <p class="goal-text">"Concluir o <strong>AI Scientist FIAP</strong> e lançar soluções de IA que impactem vidas reais."</p>
         <div class="goal-progress">
@@ -642,7 +642,18 @@
     </div>
   </div>
 
+  <!-- ============ HUD MODAL OVERLAY ============ -->
+  <div class="hud-modal-overlay" id="hud-modal">
+    <div class="hud-modal-content">
+      <button class="hud-modal-close" onclick="closeHUDModal()">✕</button>
+      <h3 class="hud-modal-title glitch-text" id="hud-modal-title">System</h3>
+      <div class="hud-modal-body" id="hud-modal-body">
+        Content
+      </div>
+    </div>
+  </div>
+
   <script src="config.js"></script>
-  <script src="js/app.js?v=3"></script>
+  <script src="js/app.js?v=5"></script>
 </body>
 </html>

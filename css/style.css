@@ -1366,3 +1366,140 @@ ul { list-style: none; }
   height: 30px;
   margin-top: auto;
 }
+
+/* =========================================
+   IRON MAN HUD INTERFACE (SIDE PANELS)
+   ========================================= */
+
+/* Side panels base */
+.hud-panel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* HUD Interactive Programs */
+.hud-program {
+  background: rgba(0, 30, 60, 0.3) !important;
+  border: 1px solid rgba(0, 240, 255, 0.3) !important;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: none !important; /* overrides cyberpunk float if any */
+}
+
+/* Scanner effect for HUD */
+.hud-program::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: 1;
+}
+
+.hud-program:hover {
+  transform: scale(1.02) translateY(-2px);
+  border-color: rgba(0, 240, 255, 0.8) !important;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.3), inset 0 0 30px rgba(0, 240, 255, 0.1) !important;
+  background: rgba(0, 40, 80, 0.5) !important;
+}
+
+.hud-program:hover::before {
+  left: 200%;
+}
+
+.hud-program .card-label, .hud-program .card-title, .hud-program .card-subtitle {
+  color: #00f0ff !important;
+  text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+.hud-program .card-icon {
+  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.8));
+}
+
+/* HUD Overlay Modal */
+.hud-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 10, 20, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.hud-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hud-modal-content {
+  background: rgba(0, 20, 40, 0.6);
+  border: 2px solid rgba(0, 240, 255, 0.6);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.3), inset 0 0 40px rgba(0, 240, 255, 0.1);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  padding: 30px;
+  position: relative;
+  transform: scale(0.8) translateY(50px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: #e0ffff;
+  font-family: var(--font-mono);
+  overflow-y: auto;
+}
+
+.hud-modal-overlay.active .hud-modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.hud-modal-close {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: transparent;
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.hud-modal-close:hover {
+  background: rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.hud-modal-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+  padding-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.hud-modal-body {
+  line-height: 1.6;
+  font-size: 0.95rem;
+  color: #e0ffff;
+}
