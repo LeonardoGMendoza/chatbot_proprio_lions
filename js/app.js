@@ -567,3 +567,52 @@ function formatMarkdown(text) {
   setTimeout(addTerminalLine, 1500);
 })();
 
+// ================================================
+// YEAR 3000 CYBER EFFECTS (MUTATING NUMBERS & GLITCH)
+// ================================================
+(function initCyberEffects() {
+  // Mutating numbers
+  const mutatingElements = document.querySelectorAll('.mutating-number');
+  const chars = '0123456789!@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  
+  mutatingElements.forEach(el => {
+    const originalText = el.innerText;
+    
+    setInterval(() => {
+      if (Math.random() > 0.8) { // 20% chance to start mutating
+        let iterations = 0;
+        const interval = setInterval(() => {
+          el.innerText = originalText.split('').map((char, index) => {
+            if (index < iterations) {
+              return originalText[index];
+            }
+            return chars[Math.floor(Math.random() * chars.length)];
+          }).join('');
+          
+          if (iterations >= originalText.length) {
+            clearInterval(interval);
+            el.innerText = originalText;
+          }
+          iterations += 1/3;
+        }, 30);
+      }
+    }, 3000);
+  });
+
+  // Glitch Text
+  const glitchElements = document.querySelectorAll('.glitch-text');
+  glitchElements.forEach(el => {
+    // We add data-text attribute for CSS pseudo elements to work
+    el.setAttribute('data-text', el.innerText);
+    
+    setInterval(() => {
+      if (Math.random() > 0.9) { // 10% chance to glitch
+        el.classList.add('glitch-effect');
+        setTimeout(() => {
+          el.classList.remove('glitch-effect');
+        }, Math.random() * 500 + 200);
+      }
+    }, 2000);
+  });
+})();
+

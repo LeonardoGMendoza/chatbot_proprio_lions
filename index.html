@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=2" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body>
 
@@ -154,6 +154,94 @@
           <span>CLOUDFLARE</span><span class="dot">·</span>
         </div>
       </div>
+
+      <!-- ARQUITETURA DE IA -->
+      <section class="section" id="arquitetura">
+        <div class="section-header">
+          <span class="section-tag">// architecture</span>
+          <h2 class="section-title glitch-text">Lions <em>AI Engine.</em></h2>
+        </div>
+        
+        <div class="arch-container cyber-glow">
+          <svg class="arch-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+            <!-- Channels to Queue -->
+            <path d="M 170 270 L 220 270" class="arch-line line-request" />
+            <path d="M 220 290 L 170 290" class="arch-line line-response" />
+            <text x="175" y="260" class="arch-text text-yellow">Request</text>
+            <text x="175" y="305" class="arch-text text-green">5. Response</text>
+
+            <!-- Queue to Engine -->
+            <path d="M 420 280 L 500 280" class="arch-line line-request" />
+            <text x="440" y="270" class="arch-text text-yellow">+ Process</text>
+
+            <!-- Engine to Knowledge Base -->
+            <path d="M 660 250 Q 700 120 750 120" class="arch-line line-retrieve" />
+            <text x="660" y="150" class="arch-text text-blue">3. Retrieve</text>
+
+            <!-- Engine to Tools -->
+            <path d="M 660 280 L 750 280" class="arch-line line-retrieve" />
+            <text x="680" y="270" class="arch-text text-blue">4. Execute</text>
+
+            <!-- Engine to Prompts -->
+            <path d="M 660 310 Q 700 450 750 450" class="arch-line line-retrieve" />
+            <text x="660" y="420" class="arch-text text-blue">Prompt Evolution</text>
+
+            <!-- Engine to Observability -->
+            <path d="M 580 360 Q 580 500 520 500" class="arch-line line-logs" />
+            <text x="540" y="420" class="arch-text text-dim">Metrics & Monitor</text>
+
+            <!-- Queue to Observability -->
+            <path d="M 320 310 Q 320 480 350 480" class="arch-line line-logs" />
+            <text x="330" y="400" class="arch-text text-dim">Logs</text>
+          </svg>
+
+          <!-- Nodes (Absolute positioned matching SVG coordinates) -->
+          <div class="arch-node" style="left: 5%; top: 41.6%; width: 12%;">
+            <div class="node-icon">💬</div>
+            <div class="node-title">Channels</div>
+          </div>
+          
+          <div class="arch-node node-cylinder" style="left: 22%; top: 41.6%; width: 20%;">
+            <div class="node-title">Queue</div>
+          </div>
+
+          <div class="arch-node node-engine cyber-float" style="left: 50%; top: 33.3%; width: 16%; height: 26.6%;">
+            <div class="engine-net">
+              <span></span><span></span><span></span>
+              <span></span><span></span><span></span>
+            </div>
+            <div class="node-title">AI Engine</div>
+          </div>
+
+          <div class="arch-node node-db" style="left: 75%; top: 13.3%; width: 18%; height: 13.3%;">
+            <div class="node-title">Knowledge Base</div>
+          </div>
+
+          <div class="arch-node" style="left: 75%; top: 41.6%; width: 18%;">
+            <div class="node-icon">⚙️</div>
+            <div class="node-title">Tools</div>
+          </div>
+
+          <div class="arch-node node-doc" style="left: 75%; top: 66.6%; width: 18%; height: 16.6%;">
+            <div class="node-title">Prompts</div>
+          </div>
+
+          <div class="arch-node node-obs" style="left: 35%; top: 75%; width: 17%; height: 16.6%;">
+            <div class="obs-header">
+              <div class="term-dots"><span></span><span></span><span></span></div>
+              <div class="obs-title">OBSERVABILITY</div>
+            </div>
+            <div class="obs-stats">
+              <div>LATÊNCIA<br/><strong class="text-yellow">24ms</strong></div>
+              <div>TOKEN/S<br/><strong class="text-green mutating-number">85.2</strong></div>
+              <div>SUCESSO<br/><strong class="text-blue">99.9%</strong></div>
+            </div>
+            <svg class="obs-chart" viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path d="M0 25 L10 15 L20 20 L30 5 L40 22 L50 18 L60 25 L70 10 L80 15 L90 5 L100 20" fill="none" stroke="var(--gold)" stroke-width="2" />
+            </svg>
+          </div>
+        </div>
+      </section>
 
       <!-- SOBRE -->
       <section class="section" id="sobre">
@@ -555,6 +643,6 @@
   </div>
 
   <script src="config.js"></script>
-  <script src="js/app.js?v=2"></script>
+  <script src="js/app.js?v=3"></script>
 </body>
 </html>
