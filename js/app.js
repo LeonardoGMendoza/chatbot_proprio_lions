@@ -380,7 +380,7 @@ function addBotMessage(text) {
         if (tagEnd !== -1) {
           bubble.innerHTML += text.substring(i, tagEnd + 1);
           i = tagEnd + 1;
-          setTimeout(typeWriter, 15);
+          setTimeout(typeWriter, 30);
           messages.scrollTop = messages.scrollHeight;
           return;
         }
@@ -389,7 +389,7 @@ function addBotMessage(text) {
       bubble.innerHTML += char;
       i++;
       messages.scrollTop = messages.scrollHeight;
-      setTimeout(typeWriter, 15);
+      setTimeout(typeWriter, 30);
     }
   }
   typeWriter();
@@ -407,7 +407,7 @@ function addBotMessage(text) {
 
     const utterance = new SpeechSynthesisUtterance(plainText);
     utterance.lang = 'pt-BR';
-    utterance.rate = 1.1;
+    utterance.rate = 1.0;
 
     // Tentar achar voz em Português melhor (ex: Google)
     const voices = window.speechSynthesis.getVoices();
