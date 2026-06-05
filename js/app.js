@@ -75,6 +75,16 @@ let agentOpen = false;
   const ctx = canvas.getContext('2d');
   let particles = [];
   let W, H;
+  let mouse = { x: null, y: null, radius: 150 };
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+  });
+  window.addEventListener('mouseout', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
 
   function resize() {
     W = canvas.width = window.innerWidth;
@@ -88,15 +98,27 @@ let agentOpen = false;
     reset() {
       this.x = Math.random() * W;
       this.y = Math.random() * H;
-      this.r = Math.random() * 1.2 + 0.3;
-      this.vx = (Math.random() - 0.5) * 0.2;
-      this.vy = (Math.random() - 0.5) * 0.2;
+      this.r = Math.random() * 1.5 + 0.5;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
       this.alpha = Math.random() * 0.5 + 0.1;
     }
     update() {
       this.x += this.vx;
       this.y += this.vy;
       if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+
+      // Mouse repulsion
+      if (mouse.x != null) {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < mouse.radius) {
+          const force = (mouse.radius - distance) / mouse.radius;
+          this.x -= (dx / distance) * force * 2;
+          this.y -= (dy / distance) * force * 2;
+        }
+      }
     }
     draw() {
       ctx.beginPath();
@@ -106,11 +128,32 @@ let agentOpen = false;
     }
   }
 
-  for (let i = 0; i < 80; i++) particles.push(new Particle());
+  for (let i = 0; i < 90; i++) particles.push(new Particle());
 
   function animate() {
     ctx.clearRect(0, 0, W, H);
+    
+    // Update and draw particles
     particles.forEach(p => { p.update(); p.draw(); });
+
+    // Draw connecting lines
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 110) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(212,160,23,${0.15 * (1 - distance/110)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
     requestAnimationFrame(animate);
   }
   animate();
@@ -475,3 +518,52 @@ function formatMarkdown(text) {
   console.log('%c🦁 Lions Agent', 'color:#d4a017;font-size:16px;font-weight:bold');
   console.log('%clions.sandlj.com.br · Leonardo G. Mendoza', 'color:#888;font-size:11px');
 })();
+
+// ================================================
+// HACKER TERMINAL LOGIC
+// ================================================
+(function initHackerTerminal() {
+  const terminal = document.getElementById('terminal-output');
+  if (!terminal) return;
+
+  const commands = [
+    "[SYS] Analyzing dataset shape: (10432, 18)",
+    "[MODEL] Running SMOTE for class imbalance...",
+    "[MODEL] Training Random Forest Classifier... done.",
+    "[EVAL] Accuracy: 94.2% | Precision: 0.91",
+    "[NET] POST /v1beta/models/gemini-2.0-flash",
+    "[NET] Latency: 42ms | Status: 200 OK",
+    "[VPS] Checking memory usage... 63% used.",
+    "[VPS] Restarting Nginx service... success.",
+    "[AGENT] Processing natural language query...",
+    "[SYS] Extracted entities: ['FIAP', 'AI Scientist']",
+    "[OPS] Git pull origin main -> Fast-forward",
+    "[CRISP-DM] Business Understanding phase complete.",
+    "[SECURITY] Encrypted tunnel established (TLS 1.3)",
+    "Loading embeddings... [██████████] 100%"
+  ];
+
+  function addTerminalLine() {
+    const line = document.createElement('div');
+    line.className = 'term-line';
+    
+    if (Math.random() > 0.7) {
+      const hash = Math.random().toString(16).substr(2, 16).toUpperCase();
+      line.textContent = `> 0x${hash} INSTRUCTION_RECEIVED`;
+    } else {
+      line.textContent = commands[Math.floor(Math.random() * commands.length)];
+    }
+
+    terminal.appendChild(line);
+    
+    if (terminal.childElementCount > 8) {
+      terminal.removeChild(terminal.firstChild);
+    }
+    
+    terminal.scrollTop = terminal.scrollHeight;
+    setTimeout(addTerminalLine, Math.random() * 2000 + 800);
+  }
+
+  setTimeout(addTerminalLine, 1500);
+})();
+

@@ -1023,3 +1023,91 @@ ul { list-style: none; }
   .hero-actions { flex-direction: column; width: 100%; }
   .btn { width: 100%; text-align: center; }
 }
+
+/* =========================================
+   FUTURISTIC / DYNAMIC ELEMENTS (MARQUEE & TERMINAL)
+   ========================================= */
+
+/* MARQUEE INFINITO */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  background: rgba(8, 8, 8, 0.9);
+  border-top: 1px solid rgba(212,160,23,0.1);
+  border-bottom: 1px solid rgba(212,160,23,0.1);
+  padding: 15px 0;
+  display: flex;
+  margin-top: -1px;
+  position: relative;
+  z-index: 10;
+}
+.marquee-content {
+  display: inline-flex;
+  align-items: center;
+  animation: marquee 35s linear infinite;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+  opacity: 0.8;
+}
+.marquee-content span { padding: 0 15px; }
+.marquee-content .dot { color: rgba(255,255,255,0.2); }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* HACKER TERMINAL */
+.hacker-terminal {
+  background: rgba(5, 5, 5, 0.95);
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  font-family: var(--font-mono);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+}
+.terminal-header {
+  background: #111;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+}
+.term-dots { display: flex; gap: 6px; }
+.term-dots span { width: 10px; height: 10px; border-radius: 50%; background: #333; }
+.term-dots span:nth-child(1) { background: #ff5f56; }
+.term-dots span:nth-child(2) { background: #ffbd2e; }
+.term-dots span:nth-child(3) { background: #27c93f; }
+.term-title { margin-left: 10px; color: rgba(0, 255, 0, 0.5); font-size: 0.75rem; }
+.terminal-body {
+  padding: 12px;
+  flex: 1;
+  overflow-y: hidden;
+  color: #0f0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.terminal-body::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+  pointer-events: none;
+}
+.term-line {
+  margin-bottom: 5px;
+  word-break: break-all;
+  opacity: 0.9;
+  text-shadow: 0 0 5px rgba(0,255,0,0.4);
+  animation: typing 0.1s ease-out;
+}
+@keyframes typing {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 0.9; transform: translateY(0); }
+}
