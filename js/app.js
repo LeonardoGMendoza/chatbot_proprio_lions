@@ -62,7 +62,7 @@ SEU COMPORTAMENTO:
 - Celebre as conquistas do Leonardo com entusiasmo
 `.trim();
 
-let geminiApiKey = localStorage.getItem('lions_gemini_key') || '';
+let geminiApiKey = window.LIONS_API_KEY || localStorage.getItem('lions_gemini_key') || '';
 let conversationHistory = [];
 let agentOpen = false;
 

@@ -1,0 +1,6 @@
+# Arquivo de configuração com chave API — NUNCA subir no GitHub
+config.js
+
+# Outros arquivos a ignorar
+.DS_Store
+*.log
