@@ -619,6 +619,8 @@ function formatMarkdown(text) {
 // ================================================
 // IRON MAN HUD MODAL LOGIC
 // ================================================
+let hudTypeTimeout;
+
 window.openHUDModal = function(title, content) {
   const modal = document.getElementById('hud-modal');
   const modalTitle = document.getElementById('hud-modal-title');
@@ -628,10 +630,34 @@ window.openHUDModal = function(title, content) {
     modalTitle.innerHTML = title;
     // adding glitch attribute
     modalTitle.setAttribute('data-text', title);
-    modalBody.innerHTML = content;
+    
+    modalBody.innerHTML = '';
     modal.classList.add('active');
     
-    // Play a sci-fi sound effect if we had one, but visual is enough
+    clearTimeout(hudTypeTimeout);
+    
+    let i = 0;
+    function typeWriter() {
+      if (i < content.length) {
+        let char = content.charAt(i);
+        
+        // Fast-forward HTML tags to avoid breaking markup
+        if (char === '<') {
+          let tagEnd = content.indexOf('>', i);
+          if (tagEnd !== -1) {
+            modalBody.innerHTML += content.substring(i, tagEnd + 1);
+            i = tagEnd + 1;
+            hudTypeTimeout = setTimeout(typeWriter, 15);
+            return;
+          }
+        }
+        
+        modalBody.innerHTML += char;
+        i++;
+        hudTypeTimeout = setTimeout(typeWriter, 15);
+      }
+    }
+    typeWriter();
   }
 };
 
@@ -639,6 +665,7 @@ window.closeHUDModal = function() {
   const modal = document.getElementById('hud-modal');
   if (modal) {
     modal.classList.remove('active');
+    clearTimeout(hudTypeTimeout);
   }
 };
 
