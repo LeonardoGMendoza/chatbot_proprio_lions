@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=6" />
+  <link rel="stylesheet" href="css/style.css?v=7" />
 </head>
 <body>
 
@@ -162,84 +162,125 @@
           <h2 class="section-title glitch-text">Lions <em>AI Engine.</em></h2>
         </div>
         
-        <div class="arch-container cyber-glow">
-          <svg class="arch-svg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+        <div class="arch-container cyber-glow" style="background: transparent; border: none; overflow: visible;">
+          <!-- SVG Diagrama Completo (Nós e Linhas no mesmo arquivo para nunca desalinhar) -->
+          <svg class="arch-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" style="position: relative; overflow: visible;">
+            <!-- ================= DEFS (Filtros e Gradientes) ================= -->
+            <defs>
+              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+              <linearGradient id="engine-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(15,15,15,0.9)" />
+                <stop offset="100%" stop-color="rgba(30,30,30,0.9)" />
+              </linearGradient>
+            </defs>
+
+            <!-- ================= LINHAS (Conexões) ================= -->
             <!-- Channels to Queue -->
-            <path d="M 170 270 L 220 270" class="arch-line line-request" />
-            <path d="M 220 290 L 170 290" class="arch-line line-response" />
-            <text x="175" y="260" class="arch-text text-yellow">Request</text>
-            <text x="175" y="305" class="arch-text text-green">5. Response</text>
+            <path d="M 180 280 L 260 280" class="arch-line line-request" />
+            <path d="M 260 310 L 180 310" class="arch-line line-response" />
+            <text x="195" y="270" class="arch-text text-yellow">Request</text>
+            <text x="185" y="330" class="arch-text text-green">5. Response</text>
 
             <!-- Queue to Engine -->
-            <path d="M 420 280 L 500 280" class="arch-line line-request" />
-            <text x="440" y="270" class="arch-text text-yellow">+ Process</text>
+            <path d="M 440 295 L 530 295" class="arch-line line-request" />
+            <text x="460" y="285" class="arch-text text-yellow">+ Process</text>
 
             <!-- Engine to Knowledge Base -->
-            <path d="M 660 250 Q 700 120 750 120" class="arch-line line-retrieve" />
-            <text x="660" y="150" class="arch-text text-blue">3. Retrieve</text>
+            <path d="M 690 260 Q 730 140 780 140" class="arch-line line-retrieve" />
+            <text x="700" y="170" class="arch-text text-blue">3. Retrieve</text>
 
             <!-- Engine to Tools -->
-            <path d="M 660 280 L 750 280" class="arch-line line-retrieve" />
-            <text x="680" y="270" class="arch-text text-blue">4. Execute</text>
+            <path d="M 690 295 L 780 295" class="arch-line line-retrieve" />
+            <text x="710" y="285" class="arch-text text-blue">4. Execute</text>
 
             <!-- Engine to Prompts -->
-            <path d="M 660 310 Q 700 450 750 450" class="arch-line line-retrieve" />
-            <text x="660" y="420" class="arch-text text-blue">Prompt Evolution</text>
+            <path d="M 690 330 Q 730 460 780 460" class="arch-line line-retrieve" />
+            <text x="700" y="440" class="arch-text text-blue">Prompt Evolution</text>
 
             <!-- Engine to Observability -->
-            <path d="M 580 360 Q 580 500 520 500" class="arch-line line-logs" />
-            <text x="540" y="420" class="arch-text text-dim">Metrics & Monitor</text>
+            <path d="M 610 370 Q 610 520 540 520" class="arch-line line-logs" />
+            <text x="560" y="450" class="arch-text text-dim">Metrics & Monitor</text>
 
             <!-- Queue to Observability -->
-            <path d="M 320 310 Q 320 480 350 480" class="arch-line line-logs" />
-            <text x="330" y="400" class="arch-text text-dim">Logs</text>
+            <path d="M 350 330 Q 350 500 370 500" class="arch-line line-logs" />
+            <text x="330" y="420" class="arch-text text-dim">Logs</text>
+
+            <!-- ================= NÓS (Boxes SVG) ================= -->
+            
+            <!-- Channels -->
+            <g transform="translate(60, 260)">
+              <rect width="120" height="70" rx="8" fill="rgba(20,20,25,0.9)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <text x="15" y="40" fill="#fff" font-family="monospace" font-size="14">💬 Channels</text>
+            </g>
+
+            <!-- Queue -->
+            <g transform="translate(260, 260)">
+              <rect width="180" height="70" rx="35" fill="rgba(20,20,25,0.9)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <text x="65" y="40" fill="#fff" font-family="monospace" font-size="14">Queue</text>
+            </g>
+
+            <!-- AI Engine -->
+            <g transform="translate(530, 210)">
+              <rect width="160" height="170" rx="12" fill="url(#engine-grad)" stroke="rgba(212,160,23,0.5)" stroke-width="2" filter="url(#glow)" />
+              <!-- Neural Net Dots -->
+              <circle cx="65" cy="270" r="4" fill="transparent" stroke="#d4a017" />
+              <circle cx="80" cy="270" r="4" fill="#d4a017" filter="url(#glow)" />
+              <circle cx="95" cy="270" r="4" fill="transparent" stroke="#d4a017" />
+              <circle cx="65" cy="290" r="4" fill="#d4a017" filter="url(#glow)" />
+              <circle cx="80" cy="290" r="4" fill="transparent" stroke="#d4a017" />
+              <circle cx="95" cy="290" r="4" fill="#d4a017" filter="url(#glow)" />
+              <text x="40" y="110" fill="#fff" font-family="monospace" font-size="16" font-weight="bold">AI Engine</text>
+            </g>
+
+            <!-- Knowledge Base -->
+            <g transform="translate(780, 100)">
+              <!-- Cilindro Banco de Dados -->
+              <path d="M 0 20 C 0 5, 160 5, 160 20 L 160 60 C 160 75, 0 75, 0 60 Z" fill="rgba(20,20,25,0.9)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <path d="M 0 20 C 0 35, 160 35, 160 20" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <text x="25" y="45" fill="#fff" font-family="monospace" font-size="14">Knowledge Base</text>
+            </g>
+
+            <!-- Tools -->
+            <g transform="translate(780, 260)">
+              <path d="M 20 0 L 140 0 L 160 35 L 140 70 L 20 70 L 0 35 Z" fill="rgba(20,20,25,0.9)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <text x="45" y="40" fill="#fff" font-family="monospace" font-size="14">⚙️ Tools</text>
+            </g>
+
+            <!-- Prompts -->
+            <g transform="translate(780, 420)">
+              <path d="M 0 0 L 120 0 L 160 40 L 160 100 L 0 100 Z" fill="rgba(20,20,25,0.9)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <path d="M 120 0 L 120 40 L 160 40" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <text x="45" y="55" fill="#fff" font-family="monospace" font-size="14">Prompts</text>
+            </g>
+
+            <!-- Observability -->
+            <g transform="translate(370, 450)">
+              <rect width="170" height="100" rx="6" fill="rgba(10,10,15,0.95)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+              <rect width="170" height="20" rx="6" fill="#111" />
+              <!-- Traffic lights -->
+              <circle cx="15" cy="10" r="4" fill="#ff5f56" />
+              <circle cx="30" cy="10" r="4" fill="#ffbd2e" />
+              <circle cx="45" cy="10" r="4" fill="#27c93f" />
+              <text x="60" y="14" fill="#666" font-family="monospace" font-size="10">OBSERVABILITY</text>
+              
+              <!-- Data -->
+              <text x="15" y="45" fill="#888" font-family="monospace" font-size="10">LATÊNCIA</text>
+              <text x="15" y="65" fill="#d4a017" font-family="monospace" font-size="14" font-weight="bold">24ms</text>
+              
+              <text x="75" y="45" fill="#888" font-family="monospace" font-size="10">TOKEN/S</text>
+              <text x="75" y="65" fill="#27c93f" font-family="monospace" font-size="14" font-weight="bold">85.2</text>
+              
+              <text x="130" y="45" fill="#888" font-family="monospace" font-size="10">SUCESSO</text>
+              <text x="130" y="65" fill="#3b82f6" font-family="monospace" font-size="14" font-weight="bold">99.9%</text>
+
+              <!-- Mini Chart -->
+              <path d="M 10 90 L 30 80 L 50 85 L 70 70 L 90 85 L 110 75 L 130 90 L 150 75 L 160 85" fill="none" stroke="#d4a017" stroke-width="1.5" />
+            </g>
+
           </svg>
-
-          <!-- Nodes (Absolute positioned matching SVG coordinates) -->
-          <div class="arch-node" style="left: 5%; top: 41.6%; width: 12%;">
-            <div class="node-icon">💬</div>
-            <div class="node-title">Channels</div>
-          </div>
-          
-          <div class="arch-node node-cylinder" style="left: 22%; top: 41.6%; width: 20%;">
-            <div class="node-title">Queue</div>
-          </div>
-
-          <div class="arch-node node-engine cyber-float" style="left: 50%; top: 33.3%; width: 16%; height: 26.6%;">
-            <div class="engine-net">
-              <span></span><span></span><span></span>
-              <span></span><span></span><span></span>
-            </div>
-            <div class="node-title">AI Engine</div>
-          </div>
-
-          <div class="arch-node node-db" style="left: 75%; top: 13.3%; width: 18%; height: 13.3%;">
-            <div class="node-title">Knowledge Base</div>
-          </div>
-
-          <div class="arch-node" style="left: 75%; top: 41.6%; width: 18%;">
-            <div class="node-icon">⚙️</div>
-            <div class="node-title">Tools</div>
-          </div>
-
-          <div class="arch-node node-doc" style="left: 75%; top: 66.6%; width: 18%; height: 16.6%;">
-            <div class="node-title">Prompts</div>
-          </div>
-
-          <div class="arch-node node-obs" style="left: 35%; top: 75%; width: 17%; height: 16.6%;">
-            <div class="obs-header">
-              <div class="term-dots"><span></span><span></span><span></span></div>
-              <div class="obs-title">OBSERVABILITY</div>
-            </div>
-            <div class="obs-stats">
-              <div>LATÊNCIA<br/><strong class="text-yellow">24ms</strong></div>
-              <div>TOKEN/S<br/><strong class="text-green mutating-number">85.2</strong></div>
-              <div>SUCESSO<br/><strong class="text-blue">99.9%</strong></div>
-            </div>
-            <svg class="obs-chart" viewBox="0 0 100 30" preserveAspectRatio="none">
-              <path d="M0 25 L10 15 L20 20 L30 5 L40 22 L50 18 L60 25 L70 10 L80 15 L90 5 L100 20" fill="none" stroke="var(--gold)" stroke-width="2" />
-            </svg>
-          </div>
         </div>
       </section>
 
@@ -527,19 +568,19 @@
         <div class="live-items">
           <div class="live-item">
             <span class="live-dot green"></span>
-            <span>cursopythonia.sandlj</span>
+            <span class="typewriter-text">cursopythonia.sandlj</span>
           </div>
           <div class="live-item">
             <span class="live-dot green"></span>
-            <span>brinkamaisfestas.sandlj</span>
+            <span class="typewriter-text">brinkamaisfestas.sandlj</span>
           </div>
           <div class="live-item">
             <span class="live-dot green"></span>
-            <span>lions.sandlj.com.br</span>
+            <span class="typewriter-text">lions.sandlj.com.br</span>
           </div>
           <div class="live-item">
             <span class="live-dot yellow"></span>
-            <span>FIAP Fase 2 — em curso</span>
+            <span class="typewriter-text">FIAP Fase 2 — em curso</span>
           </div>
         </div>
       </div>
@@ -654,6 +695,6 @@
   </div>
 
   <script src="config.js"></script>
-  <script src="js/app.js?v=5"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 </html>
